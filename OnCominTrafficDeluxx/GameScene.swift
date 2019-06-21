@@ -39,6 +39,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let scale = SKAction.scale(to:1.0, duration: 0.5)
         fgNode.childNode(withName: "Ready")!.run(scale)
         physicsWorld.contactDelegate = self
+        SetUpCoreMotion()
+    }
+    
+    func sceneCropAmount() -> CGFloat {
+        guard let view = view else {
+            return 0
+        }
+        let scale = view.bounds.size.height / size.height
+        let scaledWidth = size.width * scale
+    }
+
+    func SetUpCoreMotion() -> CGFloat {
+        guard let view = view else {
+            return 0
+        }
+        let scale = view.bounds.size.height / size.height
+        let scaledWidth = size.width * scale
+        let scaledOverlap = scaledWidth - view.bounds.size.width
+        return scaledOverlap/scale
     }
     
         
