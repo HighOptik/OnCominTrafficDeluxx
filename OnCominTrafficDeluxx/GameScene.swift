@@ -3,26 +3,6 @@ import SpriteKit
 
 class GameScene: SKScene {
 
-    override func didMove(to view: SKView) {
-        spawnCar()
-    }
-    
-    func spawnCar() {
-        let car1 = SKSpriteNode(imageNamed: "car1")
-        car1.position = CGPoint(x: 0,
-                                 y: 1100)
-        addChild(car1)
-        
-        let actionMove = SKAction.move(
-            to: CGPoint(x: 0, y: -1100),
-            duration: 2.0)
-        car1.run(actionMove)
-    }
-    
-    override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
-    }
-
 enum GameState : Int {
     case waitingForTap = 0
     case waitingForCrash = 1
@@ -44,6 +24,7 @@ struct PhysicsCategories {
     static let Traffic: UInt32             = 0b100
     static let Powerup: UInt32             = 0b1000
 }
+    
 class GameScene: SKScene, SKPhysicsContactDelegate{
     var gameState = GameState.waitingForTap
     var playerState = PlayerState.idle
@@ -89,6 +70,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         player.physicsBody!.isDynamic = true
         
         setPlayerSetVelocity(500)
+        spawnCar()
     
     }
     
@@ -155,5 +137,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
 
     }
+    ///ERICK HOBBS
+    func spawnCar() {
+        let car1 = SKSpriteNode(imageNamed: "car1")
+        car1.position = CGPoint(x: 0,
+                                y: 1100)
+        addChild(car1)
+        
+        let actionMove = SKAction.move(
+            to: CGPoint(x: 0, y: -1100),
+            duration: 2.0)
+        car1.run(actionMove)
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        // Called before each frame is rendered
+        }
+    }
+    ///ERICK HOBBS
 }
 
