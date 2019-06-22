@@ -32,6 +32,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var lastOverlayPos = CGPoint.zero
     var lastOverlayHeight: CGFloat=0.0
     var levelPositionY: CGFloat=0.0
+    let cameraNode = SKCameraNode()
+    var lava : SKSpriteNode!
+    
     
     override func didMove(to view: SKView) {
         SetupNodes()
@@ -48,8 +51,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         let scale = view.bounds.size.height / size.height
         let scaledWidth = size.width * scale
+        let scaledOverlap = scaledWidth - view.bounds.size.width
+        return scaledOverlap / scale
     }
-
+    
     func SetUpCoreMotion() -> CGFloat {
         guard let view = view else {
             return 0
@@ -60,7 +65,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         return scaledOverlap/scale
     }
     
-        
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
         if gameState == .waitingForTap {
             StartGame()
@@ -73,19 +78,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         bgOverlayHeight = bgOverlayNode.calculateAccumulatedFrame().height
         fgNode = worldNode.childNode(withName: "Foreground")!
         player = fgNode.childNode(withName: "Player") as! SKSpriteNode
+        addChild(cameraNode)
+        camera = cameraNode
+        //        lava = fgNode.childNode(withName: "Cops") as! SKSpriteNode
     }
+    
+    func updateCamera(){
+        let cameraTarget = convert(player.position,from: fgNode)
+        let targetPositionY = cameraTarget.y - (size.height * -0.45)
+        let diff = targetPositionY - camera!.position.y
+        let cameraLagFactor: CGFloat = 0.1
+        let lagDiff = diff * cameraLagFactor
+        let newCameraPositionY = camera!.position.y + lagDiff
+        camera!.position.y = newCameraPositionY
+        
+    }
+    
     
     func StartGame(){
         gameState = .playing
         let scale = SKAction.scale(to: 0, duration:  0.4)
         fgNode.childNode(withName: "Title")!.run(scale)
         fgNode.childNode(withName: "Ready")!.run(
-        SKAction.sequence(
-            [SKAction.wait(forDuration: 0.2), scale]))
+            SKAction.sequence(
+                [SKAction.wait(forDuration: 0.2), scale]))
         player.physicsBody!.isDynamic = true
+        setPlayerSetVelocity(750)
         
-        setPlayerSetVelocity(500)
-    
     }
     
     func SetupTransition(){
@@ -101,7 +120,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let gain: CGFloat = 1.5
         player.physicsBody!.velocity.dy = max(player.physicsBody!.velocity.dy, amount * gain)
     }
-
+    
     func loadForegroundNode(_ fileName: String) -> SKSpriteNode {
         
         let overlayScene = SKScene(fileNamed: fileName)!
@@ -145,10 +164,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 PU.removeFromParent()
                 setPlayerSetVelocity(50)
             }
-
+            
         default:
             break
         }
+    }
+    
+    override func update(_ currentTime: TimeInterval){
+        updateCamera()
+    }
 }
-}
+
 
