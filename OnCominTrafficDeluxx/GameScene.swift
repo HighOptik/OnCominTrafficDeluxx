@@ -21,6 +21,7 @@ struct PhysicsCategories {
     static let Traffic: UInt32             = 0b100
     static let Powerup: UInt32             = 0b1000
 }
+
 class GameScene: SKScene, SKPhysicsContactDelegate{
     var gameState = GameState.waitingForTap
     var playerState = PlayerState.idle
@@ -41,13 +42,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         physicsWorld.contactDelegate = self
         SetUpCoreMotion()
     }
-    
-    func sceneCropAmount() -> CGFloat {
-        guard let view = view else {
-            return 0
-        }
-        let scale = view.bounds.size.height / size.height
-    }
 
     func SetUpCoreMotion() -> CGFloat {
         guard let view = view else {
@@ -65,6 +59,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             StartGame()
         }
     }
+    
     func SetupNodes(){
         let worldNode = childNode(withName: "World")!
         bgNode = worldNode.childNode(withName: "Background")!
@@ -84,6 +79,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         player.physicsBody!.isDynamic = true
         
         setPlayerSetVelocity(500)
+        spawnCar()
     
     }
     
@@ -148,6 +144,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         default:
             break
         }
-}
+    }
+    
+    ///SPAWN ENEMY - ERICK HOBBS
+    func spawnCar() {
+        let car1 = SKSpriteNode(imageNamed: "car1")
+        car1.position = CGPoint(x: 0,
+                                y: 1100)
+        addChild(car1)
+        
+        let actionMove = SKAction.move(
+            to: CGPoint(x: 0, y: -1100),
+            duration: 4.0)
+        car1.run(actionMove)
+    }
 }
 
