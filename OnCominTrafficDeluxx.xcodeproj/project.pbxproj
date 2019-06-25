@@ -7,8 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3726626B22C19C6F0055602E /* Settings_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 3726625F22C19C6F0055602E /* Settings_BTN.png */; };
+		3726626C22C19C6F0055602E /* OK_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 3726626022C19C6F0055602E /* OK_BTN.png */; };
+		3726626D22C19C6F0055602E /* Exit_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 3726626122C19C6F0055602E /* Exit_BTN.png */; };
+		3726626E22C19C6F0055602E /* Notifications_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 3726626222C19C6F0055602E /* Notifications_BTN.png */; };
+		3726626F22C19C6F0055602E /* Pause_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 3726626322C19C6F0055602E /* Pause_BTN.png */; };
+		3726627022C19C6F0055602E /* Start_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 3726626422C19C6F0055602E /* Start_BTN.png */; };
+		3726627122C19C6F0055602E /* Sound_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 3726626522C19C6F0055602E /* Sound_BTN.png */; };
+		3726627222C19C6F0055602E /* Music_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 3726626622C19C6F0055602E /* Music_BTN.png */; };
+		3726627322C19C6F0055602E /* Play_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 3726626722C19C6F0055602E /* Play_BTN.png */; };
+		3726627422C19C6F0055602E /* Replay_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 3726626822C19C6F0055602E /* Replay_BTN.png */; };
+		3726627522C19C6F0055602E /* Close_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 3726626922C19C6F0055602E /* Close_BTN.png */; };
+		3726627622C19C6F0055602E /* Vibro_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 3726626A22C19C6F0055602E /* Vibro_BTN.png */; };
+		372662BF22C19DDE0055602E /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 372662BE22C19DDE0055602E /* GameScene.sks */; };
+		372662CD22C19E430055602E /* Settings_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 372662C122C19E430055602E /* Settings_BTN.png */; };
+		372662CE22C19E430055602E /* OK_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 372662C222C19E430055602E /* OK_BTN.png */; };
+		372662CF22C19E430055602E /* Exit_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 372662C322C19E430055602E /* Exit_BTN.png */; };
+		372662D022C19E430055602E /* Notifications_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 372662C422C19E430055602E /* Notifications_BTN.png */; };
+		372662D122C19E430055602E /* Pause_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 372662C522C19E430055602E /* Pause_BTN.png */; };
+		372662D222C19E430055602E /* Start_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 372662C622C19E430055602E /* Start_BTN.png */; };
+		372662D322C19E430055602E /* Sound_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 372662C722C19E430055602E /* Sound_BTN.png */; };
+		372662D422C19E430055602E /* Music_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 372662C822C19E430055602E /* Music_BTN.png */; };
+		372662D522C19E430055602E /* Play_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 372662C922C19E430055602E /* Play_BTN.png */; };
+		372662D622C19E430055602E /* Replay_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 372662CA22C19E430055602E /* Replay_BTN.png */; };
+		372662D722C19E430055602E /* Close_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 372662CB22C19E430055602E /* Close_BTN.png */; };
+		372662D822C19E430055602E /* Vibro_BTN.png in Resources */ = {isa = PBXBuildFile; fileRef = 372662CC22C19E430055602E /* Vibro_BTN.png */; };
 		375F437E22BB0A86000F6314 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375F437D22BB0A86000F6314 /* AppDelegate.swift */; };
-		375F438022BB0A86000F6314 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 375F437F22BB0A86000F6314 /* GameScene.sks */; };
 		375F438222BB0A86000F6314 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 375F438122BB0A86000F6314 /* Actions.sks */; };
 		375F438422BB0A86000F6314 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375F438322BB0A86000F6314 /* GameScene.swift */; };
 		375F438622BB0A86000F6314 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375F438522BB0A86000F6314 /* GameViewController.swift */; };
@@ -30,9 +54,33 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3726625F22C19C6F0055602E /* Settings_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Settings_BTN.png; sourceTree = "<group>"; };
+		3726626022C19C6F0055602E /* OK_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OK_BTN.png; sourceTree = "<group>"; };
+		3726626122C19C6F0055602E /* Exit_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Exit_BTN.png; sourceTree = "<group>"; };
+		3726626222C19C6F0055602E /* Notifications_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Notifications_BTN.png; sourceTree = "<group>"; };
+		3726626322C19C6F0055602E /* Pause_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Pause_BTN.png; sourceTree = "<group>"; };
+		3726626422C19C6F0055602E /* Start_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Start_BTN.png; sourceTree = "<group>"; };
+		3726626522C19C6F0055602E /* Sound_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Sound_BTN.png; sourceTree = "<group>"; };
+		3726626622C19C6F0055602E /* Music_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Music_BTN.png; sourceTree = "<group>"; };
+		3726626722C19C6F0055602E /* Play_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Play_BTN.png; sourceTree = "<group>"; };
+		3726626822C19C6F0055602E /* Replay_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Replay_BTN.png; sourceTree = "<group>"; };
+		3726626922C19C6F0055602E /* Close_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Close_BTN.png; sourceTree = "<group>"; };
+		3726626A22C19C6F0055602E /* Vibro_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Vibro_BTN.png; sourceTree = "<group>"; };
+		372662BE22C19DDE0055602E /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		372662C122C19E430055602E /* Settings_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Settings_BTN.png; sourceTree = "<group>"; };
+		372662C222C19E430055602E /* OK_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OK_BTN.png; sourceTree = "<group>"; };
+		372662C322C19E430055602E /* Exit_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Exit_BTN.png; sourceTree = "<group>"; };
+		372662C422C19E430055602E /* Notifications_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Notifications_BTN.png; sourceTree = "<group>"; };
+		372662C522C19E430055602E /* Pause_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Pause_BTN.png; sourceTree = "<group>"; };
+		372662C622C19E430055602E /* Start_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Start_BTN.png; sourceTree = "<group>"; };
+		372662C722C19E430055602E /* Sound_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Sound_BTN.png; sourceTree = "<group>"; };
+		372662C822C19E430055602E /* Music_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Music_BTN.png; sourceTree = "<group>"; };
+		372662C922C19E430055602E /* Play_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Play_BTN.png; sourceTree = "<group>"; };
+		372662CA22C19E430055602E /* Replay_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Replay_BTN.png; sourceTree = "<group>"; };
+		372662CB22C19E430055602E /* Close_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Close_BTN.png; sourceTree = "<group>"; };
+		372662CC22C19E430055602E /* Vibro_BTN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Vibro_BTN.png; sourceTree = "<group>"; };
 		375F437A22BB0A86000F6314 /* OnCominTrafficDeluxx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnCominTrafficDeluxx.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		375F437D22BB0A86000F6314 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		375F437F22BB0A86000F6314 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		375F438122BB0A86000F6314 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		375F438322BB0A86000F6314 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		375F438522BB0A86000F6314 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
@@ -65,6 +113,45 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3726625E22C19C6F0055602E /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				3726625F22C19C6F0055602E /* Settings_BTN.png */,
+				372662C022C19E430055602E /* Buttons */,
+				3726626022C19C6F0055602E /* OK_BTN.png */,
+				3726626122C19C6F0055602E /* Exit_BTN.png */,
+				3726626222C19C6F0055602E /* Notifications_BTN.png */,
+				3726626322C19C6F0055602E /* Pause_BTN.png */,
+				3726626422C19C6F0055602E /* Start_BTN.png */,
+				3726626522C19C6F0055602E /* Sound_BTN.png */,
+				3726626622C19C6F0055602E /* Music_BTN.png */,
+				3726626722C19C6F0055602E /* Play_BTN.png */,
+				3726626822C19C6F0055602E /* Replay_BTN.png */,
+				3726626922C19C6F0055602E /* Close_BTN.png */,
+				3726626A22C19C6F0055602E /* Vibro_BTN.png */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
+		372662C022C19E430055602E /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				372662C122C19E430055602E /* Settings_BTN.png */,
+				372662C222C19E430055602E /* OK_BTN.png */,
+				372662C322C19E430055602E /* Exit_BTN.png */,
+				372662C422C19E430055602E /* Notifications_BTN.png */,
+				372662C522C19E430055602E /* Pause_BTN.png */,
+				372662C622C19E430055602E /* Start_BTN.png */,
+				372662C722C19E430055602E /* Sound_BTN.png */,
+				372662C822C19E430055602E /* Music_BTN.png */,
+				372662C922C19E430055602E /* Play_BTN.png */,
+				372662CA22C19E430055602E /* Replay_BTN.png */,
+				372662CB22C19E430055602E /* Close_BTN.png */,
+				372662CC22C19E430055602E /* Vibro_BTN.png */,
+			);
+			name = Buttons;
+			sourceTree = "<group>";
+		};
 		375F437122BB0A86000F6314 = {
 			isa = PBXGroup;
 			children = (
@@ -85,15 +172,16 @@
 			isa = PBXGroup;
 			children = (
 				375F437D22BB0A86000F6314 /* AppDelegate.swift */,
-				375F437F22BB0A86000F6314 /* GameScene.sks */,
 				375F438122BB0A86000F6314 /* Actions.sks */,
 				375F438322BB0A86000F6314 /* GameScene.swift */,
 				375F438522BB0A86000F6314 /* GameViewController.swift */,
 				37767B3422BB9C4900D85087 /* SKTUtils */,
 				375F438722BB0A86000F6314 /* Main.storyboard */,
+				372662BE22C19DDE0055602E /* GameScene.sks */,
 				375F438A22BB0A87000F6314 /* Assets.xcassets */,
 				375F438C22BB0A87000F6314 /* LaunchScreen.storyboard */,
 				375F438F22BB0A87000F6314 /* Info.plist */,
+				3726625E22C19C6F0055602E /* Buttons */,
 			);
 			path = OnCominTrafficDeluxx;
 			sourceTree = "<group>";
@@ -175,11 +263,35 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3726627122C19C6F0055602E /* Sound_BTN.png in Resources */,
 				375F438922BB0A86000F6314 /* Main.storyboard in Resources */,
-				375F438022BB0A86000F6314 /* GameScene.sks in Resources */,
+				3726627322C19C6F0055602E /* Play_BTN.png in Resources */,
+				3726627622C19C6F0055602E /* Vibro_BTN.png in Resources */,
+				372662CF22C19E430055602E /* Exit_BTN.png in Resources */,
+				3726627022C19C6F0055602E /* Start_BTN.png in Resources */,
+				372662D522C19E430055602E /* Play_BTN.png in Resources */,
+				372662CD22C19E430055602E /* Settings_BTN.png in Resources */,
 				375F438B22BB0A87000F6314 /* Assets.xcassets in Resources */,
+				372662D022C19E430055602E /* Notifications_BTN.png in Resources */,
+				372662D822C19E430055602E /* Vibro_BTN.png in Resources */,
 				375F438E22BB0A87000F6314 /* LaunchScreen.storyboard in Resources */,
+				372662D422C19E430055602E /* Music_BTN.png in Resources */,
+				372662D622C19E430055602E /* Replay_BTN.png in Resources */,
+				372662CE22C19E430055602E /* OK_BTN.png in Resources */,
+				3726626D22C19C6F0055602E /* Exit_BTN.png in Resources */,
+				372662D322C19E430055602E /* Sound_BTN.png in Resources */,
+				3726626F22C19C6F0055602E /* Pause_BTN.png in Resources */,
+				372662D122C19E430055602E /* Pause_BTN.png in Resources */,
+				3726627522C19C6F0055602E /* Close_BTN.png in Resources */,
+				3726626E22C19C6F0055602E /* Notifications_BTN.png in Resources */,
+				3726626C22C19C6F0055602E /* OK_BTN.png in Resources */,
+				372662D222C19E430055602E /* Start_BTN.png in Resources */,
 				375F438222BB0A86000F6314 /* Actions.sks in Resources */,
+				372662BF22C19DDE0055602E /* GameScene.sks in Resources */,
+				3726627422C19C6F0055602E /* Replay_BTN.png in Resources */,
+				372662D722C19E430055602E /* Close_BTN.png in Resources */,
+				3726627222C19C6F0055602E /* Music_BTN.png in Resources */,
+				3726626B22C19C6F0055602E /* Settings_BTN.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
