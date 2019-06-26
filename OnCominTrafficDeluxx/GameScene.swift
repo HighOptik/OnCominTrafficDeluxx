@@ -33,8 +33,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var lastOverlayHeight: CGFloat=0.0
     var levelPositionY: CGFloat=0.0
     let cameraNode = SKCameraNode()
-    var lava : SKSpriteNode!
-    
+    var cops : SKSpriteNode!
+    var lastUpdateTimeInterval: TimeInterval = 0
+    var deltaTime: TimeInterval = 0
     
     override func didMove(to view: SKView) {
         SetupNodes()
@@ -80,20 +81,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         player = fgNode.childNode(withName: "Player") as! SKSpriteNode
         addChild(cameraNode)
         camera = cameraNode
-//        lava = fgNode.childNode(withName: "Cops") as! SKSpriteNode
+        cops = fgNode.childNode(withName: "Cops") as! SKSpriteNode
     }
     
     func updateCamera(){
         let cameraTarget = convert(player.position,from: fgNode)
-        let targetPositionY = cameraTarget.y - (size.height * -0.45)
+        let targetPositionY = cameraTarget.y - (size.height * -0.15)
         let diff = targetPositionY - camera!.position.y
         let cameraLagFactor: CGFloat = 0.1
         let lagDiff = diff * cameraLagFactor
         let newCameraPositionY = camera!.position.y + lagDiff
         camera!.position.y = newCameraPositionY
-    
     }
     
+    func UpdateCopCollision(){
+        if player.position.y < cops.position.y + 90 {
+            playerState = .dead
+            setPlayerSetVelocity(750)
+        }
+    }
+    
+    func updateCops(_ dt: TimeInterval){
+        let bottomOfScreen = camera!.position.y - (size.height / 2)
+        let bottomOfScreenFG = convert(CGPoint(x: 0, y: bottomOfScreen), to: fgNode).y
+        let copsVel = CGFloat(750)
+        let CopsStep = copsVel * CGFloat(dt)
+        var newCopsPos = cops.position.y + CopsStep
+        newCopsPos = max(newCopsPos, bottomOfScreen - 125.0)
+        cops.position.y = newCopsPos
+    }
     
     func StartGame(){
         gameState = .playing
@@ -171,7 +187,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
 
     override func update(_ currentTime: TimeInterval){
-        updateCamera()
+        
+        if lastUpdateTimeInterval > 0 {
+            deltaTime = currentTime  - lastUpdateTimeInterval
+        }else{
+            deltaTime = 0
+        }
+        lastUpdateTimeInterval = currentTime
+        if isPaused {
+            return
+        }
+        if gameState == .playing {
+            updateCamera()
+            updateCops(deltaTime)
+            UpdateCopCollision()
+        }
     }
 }
 
