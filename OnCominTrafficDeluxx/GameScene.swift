@@ -21,6 +21,7 @@ struct PhysicsCategories {
     static let Traffic: UInt32             = 0b100
     static let Powerup: UInt32             = 0b1000
 }
+
 class GameScene: SKScene, SKPhysicsContactDelegate{
     var gameState = GameState.waitingForTap
     var playerState = PlayerState.idle
@@ -30,6 +31,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var bgOverlayHeight:CGFloat!
     var player: SKSpriteNode!
     var lastOverlayPos = CGPoint.zero
+    var coin : SKSpriteNode!
     var lastOverlayHeight: CGFloat=0.0
     var levelPositionY: CGFloat=0.0
     let cameraNode = SKCameraNode()
@@ -44,6 +46,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         fgNode.childNode(withName: "Ready")!.run(scale)
         physicsWorld.contactDelegate = self
         SetUpCoreMotion()
+    }
+    
+    func updatLevel() {
+        let cameraPos = camera!.position
+        if cameraPos.y > levelPositionY - size.height {
+        createBackground()
+            while lastOverlayPos.y < levelPositionY {
+                addRandomBackground()
+            }
+        }
     }
     
     func sceneCropAmount() -> CGFloat {
@@ -66,12 +78,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         return scaledOverlap/scale
     }
     
-        
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
         if gameState == .waitingForTap {
             StartGame()
         }
     }
+    
     func SetupNodes(){
         let worldNode = childNode(withName: "World")!
         bgNode = worldNode.childNode(withName: "Background")!
@@ -82,6 +94,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         addChild(cameraNode)
         camera = cameraNode
         cops = fgNode.childNode(withName: "Cops") as! SKSpriteNode
+        coin = fgNode.childNode(withName: "Coin") as! SKSpriteNode
+        levelPositionY = bgNode.childNode(withName: "Overlay")!.position.y + bgOverlayHeight
+        while lastOverlayPos.y < levelPositionY{
+            addRandomBackground()
+        }
+        
     }
     
     func updateCamera(){
@@ -147,7 +165,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     func createForeground(_ overlayTemplate: SKSpriteNode, flipX: Bool){
         
         let foregroundOverlay = overlayTemplate.copy() as! SKSpriteNode
-        lastOverlayPos.y = lastOverlayPos.y + (lastOverlayHeight + (foregroundOverlay.size.height / 2.0))
+        lastOverlayPos.y = lastOverlayPos.y + (lastOverlayHeight + (foregroundOverlay.size.height / 1.5))
         lastOverlayHeight = foregroundOverlay.size.height / 2
         foregroundOverlay.position = lastOverlayPos
         if (flipX == true)
@@ -157,8 +175,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         fgNode.addChild(foregroundOverlay)
     }
     
+    func addRandomBackground(){
+        let overlaySprite: SKSpriteNode
+        let platformPercentage = 60
+        if Int.random(min: 1, max: 100) <= platformPercentage {
+            overlaySprite = coin
+        } else {
+            overlaySprite = coin
+        }
+        createForeground(overlaySprite, flipX: false)
+    }
+
+
     func createBackground() {
-        
         let backgroundOverlay = bgOverlayNode.copy() as! SKNode
         backgroundOverlay.position = CGPoint (x:0.0, y: levelPositionY)
         bgNode.addChild(backgroundOverlay)
@@ -199,6 +228,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         if gameState == .playing {
             updateCamera()
+            updatLevel()
             updateCops(deltaTime)
             UpdateCopCollision()
         }
