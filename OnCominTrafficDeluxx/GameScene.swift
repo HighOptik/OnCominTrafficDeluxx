@@ -165,9 +165,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     func createForeground(_ overlayTemplate: SKSpriteNode, flipX: Bool){
         
         let foregroundOverlay = overlayTemplate.copy() as! SKSpriteNode
-        lastOverlayPos.y = lastOverlayPos.y + (lastOverlayHeight + (foregroundOverlay.size.height / 1.5))
+        lastOverlayPos.y = lastOverlayPos.y + (lastOverlayHeight + (foregroundOverlay.size.height / 1))
         lastOverlayHeight = foregroundOverlay.size.height / 2
         foregroundOverlay.position = lastOverlayPos
+        
         if (flipX == true)
         {
             foregroundOverlay.xScale = -1.0
