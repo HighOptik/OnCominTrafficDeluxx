@@ -30,20 +30,55 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var bgOverlayNode: SKNode!
     var bgOverlayHeight:CGFloat!
     var player: SKSpriteNode!
+    //var car1: SKSpriteNode!
     var lastOverlayPos = CGPoint.zero
     var lastOverlayHeight: CGFloat=0.0
     var levelPositionY: CGFloat=0.0
     let cameraNode = SKCameraNode()
-    var lava : SKSpriteNode!
+    var lava: SKSpriteNode!
+    
+    var playableRect: CGRect!
+    var playableMargin: CGFloat = 0.0
+    var playableHeight: CGFloat = 0.0
+    var maxAspectRatio: CGFloat = 0.0
+    //var playable: CGRect!
+    
+
+    
+    func debugDrawPlayableArea() {
+        let shape = SKShapeNode(rect: playableRect)
+        shape.strokeColor = SKColor.red
+        shape.lineWidth = 4.0
+        addChild(shape)
+        print("Width: \(playableRect.width)")
+        print("Height: \(playableRect.height)")
+    }
     
     
     override func didMove(to view: SKView) {
+        maxAspectRatio = 16.0/9.0
+        playableHeight = size.width / maxAspectRatio
+        playableMargin = (size.height-playableHeight)/2.0
+        playableRect = CGRect(x: 0, y: playableMargin,
+                              width: size.width,
+                              height: playableHeight)
         SetupNodes()
         SetupTransition()
         let scale = SKAction.scale(to:1.0, duration: 0.5)
         fgNode.childNode(withName: "Ready")!.run(scale)
         physicsWorld.contactDelegate = self
+        
+        debugDrawPlayableArea()
+        
         SetUpCoreMotion()
+        
+        
+        
+        run(SKAction.repeatForever(
+            SKAction.sequence([SKAction.run() { [weak self] in
+                self?.spawnCar()
+                },
+                               SKAction.wait(forDuration: 2.0)])))
     }
 
     
@@ -177,15 +212,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 
     ///SPAWN ENEMY - ERICK HOBBS
     func spawnCar() {
-        let car1 = SKSpriteNode(imageNamed: "car1")
+        let car1 = SKSpriteNode(imageNamed: "Car1")
+        car1.name = "Car1"
         car1.position = CGPoint(x: 0,
-                                y: 1100)
-        addChild(car1)
+                                y: CGFloat.random (
+                                    min: playableRect.minY + car1.size.height/2,
+                                    max: playableRect.maxY - car1.size.height/2))
+        
+        car1.size = CGSize (width: 100, height: 200)
+        car1.zRotation = 3.14 * 90 / 90
+        car1.zPosition = 10
+        fgNode.addChild(car1)
         
         let actionMove = SKAction.move(
-            to: CGPoint(x: 0, y: -1100),
-            duration: 4.0)
-        car1.run(actionMove)
+            to: CGPoint(x: 0,
+                        y: 0),
+            duration: 3.0)
+        let actionRemove = SKAction.removeFromParent()
+        car1.run(SKAction.sequence([actionMove, actionRemove]))
+        //car1.run(actionMove)
     }
 
     override func update(_ currentTime: TimeInterval){
