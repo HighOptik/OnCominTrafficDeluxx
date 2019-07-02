@@ -74,11 +74,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         
         
-        run(SKAction.repeatForever(
-            SKAction.sequence([SKAction.run() { [weak self] in
-                self?.spawnCar()
-                },
-                               SKAction.wait(forDuration: 2.0)])))
     }
 
     
@@ -142,8 +137,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         SKAction.sequence(
             [SKAction.wait(forDuration: 0.2), scale]))
         player.physicsBody!.isDynamic = true
-        setPlayerSetVelocity(750)
-        spawnCar()
+        setPlayerSetVelocity(250)
+        
+       
+        
+        run(SKAction.repeatForever(
+            SKAction.sequence([SKAction.run() { [weak self] in
+                self?.spawnCar()
+                },
+                               SKAction.wait(forDuration: 1.0)])))
         
     }
     
@@ -214,22 +216,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     func spawnCar() {
         let car1 = SKSpriteNode(imageNamed: "Car1")
         car1.name = "Car1"
-        car1.position = CGPoint(x: 0,
-                                y: CGFloat.random (
-                                    min: playableRect.minY + car1.size.height/2,
-                                    max: playableRect.maxY - car1.size.height/2))
+        car1.position = CGPoint(x: CGFloat.random (
+            min: playableRect.minX + car1.size.width/2,
+            max: playableRect.maxX - car1.size.width/2),
+                                y: size.height + car1.size.height/2)
         
         car1.size = CGSize (width: 100, height: 200)
         car1.zRotation = 3.14 * 90 / 90
         car1.zPosition = 10
         fgNode.addChild(car1)
         
-        let actionMove = SKAction.move(
-            to: CGPoint(x: 0,
-                        y: 0),
-            duration: 3.0)
+        let actionMove =
+            SKAction.moveTo(y: -car1.size.height, duration: 4.0)
+        
         let actionRemove = SKAction.removeFromParent()
-        car1.run(SKAction.sequence([actionMove, actionRemove]))
+            car1.run(SKAction.sequence([actionMove, actionRemove]))
+    
+//        SKAction.move(
+//            to: CGPoint(x: 0,
+//                        y: 0),
+//            duration: 3.0)
+//        let actionRemove = SKAction.removeFromParent()
+//        car1.run(SKAction.sequence([actionMove, actionRemove]))
         //car1.run(actionMove)
     }
 
