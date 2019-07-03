@@ -58,6 +58,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var lastUpdateTimeInterval: TimeInterval = 0
     var deltaTime: TimeInterval = 0
 
+
     
     override func didMove(to view: SKView) {
         maxAspectRatio = 16.0/9.0
@@ -66,18 +67,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         playableRect = CGRect(x: 0, y: playableMargin,
                               width: size.width,
                               height: playableHeight)
-        SetupNodes()
-        SetupTransition()
+    
+    var timer : CGFloat = 0.0
+
+    var playableRect: CGRect!
+
         let scale = SKAction.scale(to:1.0, duration: 0.5)
-        fgNode.childNode(withName: "Ready")!.run(scale)
+        let playableHeight = size.height
+        let playableWidth = size.width
+        let playableRect = CGRect(x: 0, y: 0, width: playableWidth, height: playableHeight)
         physicsWorld.contactDelegate = self
+
         debugDrawPlayableArea()
-        SetUpCoreMotion()
         
+        view.showsPhysics = true;
+        SetupNodes()
+        SetUpCoreMotion()
+        setupPlayer()
+        fgNode.childNode(withName: "Ready")!.run(scale)
+
     }
 
     
-    func updatLevel() {
+    func updateLevel() {
         let cameraPos = camera!.position
         if cameraPos.y > levelPositionY - size.height {
         createBackground()
@@ -124,12 +136,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         addChild(cameraNode)
         camera = cameraNode
         cops = fgNode.childNode(withName: "Cops") as! SKSpriteNode
-        coin = fgNode.childNode(withName: "Coin") as! SKSpriteNode
         levelPositionY = bgNode.childNode(withName: "Overlay")!.position.y + bgOverlayHeight
-        while lastOverlayPos.y < levelPositionY{
-            addRandomBackground()
-        }
-        
+    }
+    func setupPlayer (){
+        player.physicsBody!.isDynamic = false
+        player.physicsBody!.allowsRotation = false
+        player.physicsBody!.categoryBitMask = PhysicsCategories.Player
+        player.physicsBody!.collisionBitMask = PhysicsCategories.Coin
+        player.physicsBody!.contactTestBitMask = PhysicsCategories.Coin
+        setPlayerSetVelocity(750)
+        player.physicsBody!.isDynamic = true
     }
     
     func updateCamera(){
@@ -144,7 +160,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     func UpdateCopCollision(){
         if player.position.y < cops.position.y + 90 {
-            playerState = .dead
+//            playerState = .dead
             setPlayerSetVelocity(750)
         }
     }
@@ -163,9 +179,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         gameState = .playing
         let scale = SKAction.scale(to: 0, duration:  0.4)
         fgNode.childNode(withName: "Title")!.run(scale)
+        fgNode.childNode(withName: "Title")!.removeFromParent()
         fgNode.childNode(withName: "Ready")!.run(
         SKAction.sequence(
             [SKAction.wait(forDuration: 0.2), scale]))
+
         player.physicsBody!.isDynamic = true
         setPlayerSetVelocity(250)
         
@@ -186,20 +204,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     ///erick hobbs---ends
     
-    func SetupTransition(){
-        player.physicsBody = SKPhysicsBody(circleOfRadius: player.size.width * 3.0)
-        player.physicsBody!.isDynamic = false
-        player.physicsBody!.affectedByGravity = false
-        player.physicsBody!.allowsRotation = false
-        player.physicsBody!.categoryBitMask = 0;
-        player.physicsBody!.collisionBitMask = 0;
-    }
+
     
     func setPlayerSetVelocity(_ amount: CGFloat){
         let gain: CGFloat = 1.5
         player.physicsBody!.velocity.dy = max(player.physicsBody!.velocity.dy, amount * gain)
     }
-
     func loadForegroundNode(_ fileName: String) -> SKSpriteNode {
         
         let overlayScene = SKScene(fileNamed: fileName)!
@@ -222,16 +232,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     func addRandomBackground(){
-        let overlaySprite: SKSpriteNode
+        var overlaySprite = SKSpriteNode(imageNamed: "block_break01")
         let platformPercentage = 60
+        lastOverlayPos.y = lastOverlayPos.y + (lastOverlayHeight + (overlaySprite.size.height / 1))
+        lastOverlayHeight = overlaySprite.size.height / 2
         if Int.random(min: 1, max: 100) <= platformPercentage {
-            overlaySprite = coin
-        } else {
-            overlaySprite = coin
-        }
-        createForeground(overlaySprite, flipX: false)
-    }
 
+            overlaySprite.position = CGPoint(
+            x: CGFloat.random(
+                    min: playableRect.minX,
+                    max: playableRect.maxX),
+                y: player.position.y + 1000)
+            
+            overlaySprite.zPosition = 10
+            overlaySprite.physicsBody = SKPhysicsBody(rectangleOf: overlaySprite.size)
+
+            overlaySprite.physicsBody?.collisionBitMask = PhysicsCategories.Player
+            overlaySprite.physicsBody?.categoryBitMask = PhysicsCategories.Coin
+            overlaySprite.physicsBody?.contactTestBitMask = PhysicsCategories.Player
+            fgNode.addChild(overlaySprite)
+
+        } else {
+//            overlaySprite = coin
+        }
+    }
 
     func createBackground() {
         let backgroundOverlay = bgOverlayNode.copy() as! SKNode
@@ -243,17 +267,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     func didBegin(_ contact: SKPhysicsContact)  {
         let other = contact.bodyA.categoryBitMask ==
             PhysicsCategories.Player ? contact.bodyB : contact.bodyA
-        
         switch other.categoryBitMask {
+            
         case PhysicsCategories.Coin:
             if let coin = other.node as? SKSpriteNode {
                 coin.removeFromParent()
-                setPlayerSetVelocity(50)
+                setPlayerSetVelocity(500)
             }
         case PhysicsCategories.Powerup:
             if let PU = other.node as? SKSpriteNode {
                 PU.removeFromParent()
-                setPlayerSetVelocity(50)
+                setPlayerSetVelocity(500)
             }
 
         default:
@@ -324,6 +348,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     override func update(_ currentTime: TimeInterval){
+
+        if timer > 5 {
+            addRandomBackground()
+            timer = 0
+        }
         
         if lastUpdateTimeInterval > 0 {
             deltaTime = currentTime  - lastUpdateTimeInterval
@@ -336,10 +365,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         if gameState == .playing {
             updateCamera()
-            updatLevel()
+            updateLevel()
             updateCops(deltaTime)
             UpdateCopCollision()
+
             checkCollisions()
+
+            timer = timer + 1
+
         }
     }
     
@@ -355,5 +388,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             height: playableRect.height)
     }
 }
+
 
 
