@@ -30,7 +30,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var bgOverlayNode: SKNode!
     var bgOverlayHeight:CGFloat!
     var player: SKSpriteNode!
-    //var car1: SKSpriteNode!
     var lastOverlayPos = CGPoint.zero
     var coin : SKSpriteNode!
     var lastOverlayHeight: CGFloat=0.0
@@ -39,13 +38,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 
     var lava: SKSpriteNode!
     
+    ////ERICK HOBBBS
     var playableRect: CGRect!
     var playableMargin: CGFloat = 0.0
     var playableHeight: CGFloat = 0.0
     var maxAspectRatio: CGFloat = 0.0
-    //var playable: CGRect!
-    
-
     
     func debugDrawPlayableArea() {
         let shape = SKShapeNode(rect: playableRect)
@@ -55,7 +52,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         print("Width: \(playableRect.width)")
         print("Height: \(playableRect.height)")
     }
-    
+    ////ERICK HOBBS---ends
 
     var cops : SKSpriteNode!
     var lastUpdateTimeInterval: TimeInterval = 0
@@ -74,12 +71,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let scale = SKAction.scale(to:1.0, duration: 0.5)
         fgNode.childNode(withName: "Ready")!.run(scale)
         physicsWorld.contactDelegate = self
-        
         debugDrawPlayableArea()
-        
         SetUpCoreMotion()
-        
-        
         
     }
 
@@ -177,14 +170,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         setPlayerSetVelocity(250)
         
        
-        
+        /////Spawn On Coming Traffic---ERICK HOBBS
         run(SKAction.repeatForever(
             SKAction.sequence([SKAction.run() { [weak self] in
                 self?.spawnCar()
                 },
-                               SKAction.wait(forDuration: 1.0)])))
+                               SKAction.wait(forDuration: 0.5)])))
+        
+        run(SKAction.repeatForever(
+            SKAction.sequence([SKAction.run() { [weak self] in
+                self?.spawnMotorbike()
+                },
+                               SKAction.wait(forDuration: 5.0)])))
         
     }
+    ///erick hobbs---ends
     
     func SetupTransition(){
         player.physicsBody = SKPhysicsBody(circleOfRadius: player.size.width * 3.0)
@@ -272,24 +272,57 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         car1.size = CGSize (width: 100, height: 200)
         car1.zRotation = 3.14 * 90 / 90
-        car1.zPosition = 10
+        car1.zPosition = 3
         fgNode.addChild(car1)
         
         let actionMove =
-            SKAction.moveBy(x: 0, y: -(size.height + car1.size.height), duration: 4.0)
+            SKAction.moveBy(x: 0, y: -(size.height + car1.size.height), duration: 8.0)
         
         let actionRemove = SKAction.removeFromParent()
             car1.run(SKAction.sequence([actionMove, actionRemove]))
     
-//        SKAction.move(
-//            to: CGPoint(x: 0,
-//                        y: 0),
-//            duration: 3.0)
-//        let actionRemove = SKAction.removeFromParent()
-//        car1.run(SKAction.sequence([actionMove, actionRemove]))
-        //car1.run(actionMove)
     }
-
+    
+    func spawnMotorbike(){
+        let motorbike = SKSpriteNode(imageNamed: "Motorbike")
+        motorbike.name = "Motorbike"
+        motorbike.position = CGPoint(x: CGFloat.random(
+            min: cameraRect.minX + motorbike.size.width/2,
+            max: cameraRect.maxX - motorbike.size.width/2),
+                                     y: cameraRect.maxY +
+                                        motorbike.size.height/2)
+        
+        motorbike.size = CGSize (width: 100, height: 200)
+        motorbike.zRotation = 3.14 * 90 / 90
+        motorbike.zPosition = 3
+        fgNode.addChild(motorbike)
+        
+        let actionMove =
+            SKAction.moveBy(x: 0, y: -(size.height + motorbike.size.height), duration: 5.0)
+        
+        let actionRemove = SKAction.removeFromParent()
+        motorbike.run(SKAction.sequence([actionMove, actionRemove]))
+    }
+    
+    func car1Hit(car1: SKSpriteNode) {
+        car1.removeFromParent()
+    }
+    
+    func checkCollisions(){
+        var hitCar1: [SKSpriteNode] = []
+        enumerateChildNodes(withName: "Car1") {node, _ in
+            let Car1 = node as! SKSpriteNode
+            if node.frame.insetBy(dx: 20, dy: 20).intersects(
+                self.player.frame){
+                hitCar1.append(Car1)
+            }
+        }
+        
+        for car1 in hitCar1 {
+            car1Hit(car1: car1)
+        }
+    }
+    
     override func update(_ currentTime: TimeInterval){
         
         if lastUpdateTimeInterval > 0 {
@@ -306,6 +339,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             updatLevel()
             updateCops(deltaTime)
             UpdateCopCollision()
+            checkCollisions()
         }
     }
     
