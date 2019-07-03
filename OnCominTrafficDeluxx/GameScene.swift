@@ -266,9 +266,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let car1 = SKSpriteNode(imageNamed: "Car1")
         car1.name = "Car1"
         car1.position = CGPoint(x: CGFloat.random (
-            min: playableRect.minX + car1.size.width/2,
-            max: playableRect.maxX - car1.size.width/2),
-                                y: size.height + car1.size.height/2)
+            min: cameraRect.minX + car1.size.width/2,
+            max: cameraRect.maxX - car1.size.width/2),
+                                y: cameraRect.maxY + car1.size.height/2)
         
         car1.size = CGSize (width: 100, height: 200)
         car1.zRotation = 3.14 * 90 / 90
@@ -276,7 +276,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         fgNode.addChild(car1)
         
         let actionMove =
-            SKAction.moveTo(y: -car1.size.height, duration: 4.0)
+            SKAction.moveBy(x: 0, y: -(size.height + car1.size.height), duration: 4.0)
         
         let actionRemove = SKAction.removeFromParent()
             car1.run(SKAction.sequence([actionMove, actionRemove]))
@@ -307,6 +307,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             updateCops(deltaTime)
             UpdateCopCollision()
         }
+    }
+    
+    var cameraRect : CGRect {
+        let x = cameraNode.position.x - size.width/2
+            + (size.width - playableRect.width)/2
+        let y = cameraNode.position.y - size.height/2
+            + (size.height - playableRect.height)/2
+        return CGRect(
+            x: x,
+            y: y,
+            width: playableRect.width,
+            height: playableRect.height)
     }
 }
 
