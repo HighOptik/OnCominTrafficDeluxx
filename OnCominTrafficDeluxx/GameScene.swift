@@ -38,7 +38,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 
     var lava: SKSpriteNode!
     
-    ////ERICK HOBBBS
+    ///Erick Hobbs
+    var lives = 5
+    var gameOver = false
     var playableRect: CGRect!
     var playableMargin: CGFloat = 0.0
     var playableHeight: CGFloat = 0.0
@@ -52,14 +54,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         print("Width: \(playableRect.width)")
         print("Height: \(playableRect.height)")
     }
-    ////ERICK HOBBS---ends
+    ///Erick Hobbs end
 
     var cops : SKSpriteNode!
     var lastUpdateTimeInterval: TimeInterval = 0
     var deltaTime: TimeInterval = 0
+    var timer : CGFloat = 0.0
 
-
-    
     override func didMove(to view: SKView) {
         maxAspectRatio = 16.0/9.0
         playableHeight = size.width / maxAspectRatio
@@ -67,28 +68,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         playableRect = CGRect(x: 0, y: playableMargin,
                               width: size.width,
                               height: playableHeight)
-    
-    var timer : CGFloat = 0.0
-
-    var playableRect: CGRect!
 
         let scale = SKAction.scale(to:1.0, duration: 0.5)
         let playableHeight = size.height
         let playableWidth = size.width
-        let playableRect = CGRect(x: 0, y: 0, width: playableWidth, height: playableHeight)
+        playableRect = CGRect(x: 0, y: 0, width: playableWidth, height: playableHeight)
         physicsWorld.contactDelegate = self
-
         debugDrawPlayableArea()
-        
         view.showsPhysics = true;
         SetupNodes()
         SetUpCoreMotion()
         setupPlayer()
         fgNode.childNode(withName: "Ready")!.run(scale)
-
     }
 
-    
     func updateLevel() {
         let cameraPos = camera!.position
         if cameraPos.y > levelPositionY - size.height {
@@ -138,14 +131,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         cops = fgNode.childNode(withName: "Cops") as! SKSpriteNode
         levelPositionY = bgNode.childNode(withName: "Overlay")!.position.y + bgOverlayHeight
     }
-    func setupPlayer (){
+    
+    func setupPlayer () {
         player.physicsBody!.isDynamic = false
         player.physicsBody!.allowsRotation = false
         player.physicsBody!.categoryBitMask = PhysicsCategories.Player
         player.physicsBody!.collisionBitMask = PhysicsCategories.Coin
         player.physicsBody!.contactTestBitMask = PhysicsCategories.Coin
+        player.physicsBody!.collisionBitMask = PhysicsCategories.Traffic//eh
+        player.physicsBody!.contactTestBitMask = PhysicsCategories.Traffic//eh
         setPlayerSetVelocity(750)
         player.physicsBody!.isDynamic = true
+        player.physicsBody!.affectedByGravity = false
     }
     
     func updateCamera(){
@@ -163,6 +160,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 //            playerState = .dead
             setPlayerSetVelocity(750)
         }
+        //checkCollisions()
     }
     
     func updateCops(_ dt: TimeInterval){
@@ -185,10 +183,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             [SKAction.wait(forDuration: 0.2), scale]))
 
         player.physicsBody!.isDynamic = true
+        player.physicsBody!.affectedByGravity = true
         setPlayerSetVelocity(250)
         
        
-        /////Spawn On Coming Traffic---ERICK HOBBS
+        ///Spawn On Coming Traffic - Erick Hobbs
         run(SKAction.repeatForever(
             SKAction.sequence([SKAction.run() { [weak self] in
                 self?.spawnCar()
@@ -202,7 +201,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                                SKAction.wait(forDuration: 5.0)])))
         
     }
-    ///erick hobbs---ends
+    ///Erick Hobbs end
     
 
     
@@ -232,7 +231,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     func addRandomBackground(){
-        var overlaySprite = SKSpriteNode(imageNamed: "block_break01")
+        let overlaySprite = SKSpriteNode(imageNamed: "block_break01")
         let platformPercentage = 60
         lastOverlayPos.y = lastOverlayPos.y + (lastOverlayHeight + (overlaySprite.size.height / 1))
         lastOverlayHeight = overlaySprite.size.height / 2
@@ -279,13 +278,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 PU.removeFromParent()
                 setPlayerSetVelocity(500)
             }
-
+            
+        ///EH
+        case PhysicsCategories.Traffic:
+            if let traffic = other.node as? SKSpriteNode {
+                traffic.removeFromParent()
+                lives -= 1
+            }
+        ///EH end
         default:
             break
         }
     }
 
-    ///SPAWN ENEMY - ERICK HOBBS
+    ///SPAWN "ENEMYS" - Erick Hobbs
     func spawnCar() {
         let car1 = SKSpriteNode(imageNamed: "Car1")
         car1.name = "Car1"
@@ -297,6 +303,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         car1.size = CGSize (width: 100, height: 200)
         car1.zRotation = 3.14 * 90 / 90
         car1.zPosition = 3
+        
+        car1.physicsBody = SKPhysicsBody(rectangleOf: car1.size)
+        car1.physicsBody?.collisionBitMask = PhysicsCategories.Player
+        car1.physicsBody?.categoryBitMask = PhysicsCategories.Traffic
+        car1.physicsBody?.contactTestBitMask = PhysicsCategories.Player
+        car1.physicsBody!.affectedByGravity = false
+        
         fgNode.addChild(car1)
         
         let actionMove =
@@ -319,6 +332,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         motorbike.size = CGSize (width: 100, height: 200)
         motorbike.zRotation = 3.14 * 90 / 90
         motorbike.zPosition = 3
+        
+        motorbike.physicsBody = SKPhysicsBody(rectangleOf: motorbike.size)
+        motorbike.physicsBody?.collisionBitMask = PhysicsCategories.Player
+        motorbike.physicsBody?.categoryBitMask = PhysicsCategories.Traffic
+        motorbike.physicsBody?.contactTestBitMask = PhysicsCategories.Player
+        motorbike.physicsBody!.affectedByGravity = false
+        
         fgNode.addChild(motorbike)
         
         let actionMove =
@@ -327,25 +347,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let actionRemove = SKAction.removeFromParent()
         motorbike.run(SKAction.sequence([actionMove, actionRemove]))
     }
-    
-    func car1Hit(car1: SKSpriteNode) {
-        car1.removeFromParent()
-    }
-    
-    func checkCollisions(){
-        var hitCar1: [SKSpriteNode] = []
-        enumerateChildNodes(withName: "Car1") {node, _ in
-            let Car1 = node as! SKSpriteNode
-            if node.frame.insetBy(dx: 20, dy: 20).intersects(
-                self.player.frame){
-                hitCar1.append(Car1)
-            }
-        }
-        
-        for car1 in hitCar1 {
-            car1Hit(car1: car1)
-        }
-    }
+    ///Erick Hobbs end
     
     override func update(_ currentTime: TimeInterval){
 
@@ -368,14 +370,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             updateLevel()
             updateCops(deltaTime)
             UpdateCopCollision()
-
-            checkCollisions()
-
             timer = timer + 1
-
+        }
+        ///Erick Hobbs
+        if lives <= 0 && !gameOver {
+            gameOver = true
+            print("You lose!")
+            let gameOverScene = GameOverScene(size: size)
+            gameOverScene.scaleMode = scaleMode
+            let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+            view?.presentScene(gameOverScene, transition: reveal)
         }
     }
-    
+
     var cameraRect : CGRect {
         let x = cameraNode.position.x - size.width/2
             + (size.width - playableRect.width)/2
@@ -387,6 +394,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             width: playableRect.width,
             height: playableRect.height)
     }
+    ///Erick Hobbs end
 }
 
 

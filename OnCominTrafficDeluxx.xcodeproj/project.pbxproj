@@ -52,6 +52,7 @@
 		37767B4B22BB9C4900D85087 /* Vector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37767B3F22BB9C4900D85087 /* Vector3.swift */; };
 		37767B4C22BB9C4900D85087 /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37767B4022BB9C4900D85087 /* CGFloat+Extensions.swift */; };
 		9F32EA6C22C2D9C900DDD58A /* ERICKHOBBSScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 9F32EA6B22C2D9C900DDD58A /* ERICKHOBBSScene.sks */; };
+		9FFE341922CECA4E00A5C4B2 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FFE341822CECA4E00A5C4B2 /* GameOverScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -102,6 +103,7 @@
 		37767B3F22BB9C4900D85087 /* Vector3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector3.swift; sourceTree = "<group>"; };
 		37767B4022BB9C4900D85087 /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
 		9F32EA6B22C2D9C900DDD58A /* ERICKHOBBSScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ERICKHOBBSScene.sks; sourceTree = "<group>"; };
+		9FFE341822CECA4E00A5C4B2 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +178,7 @@
 				375F437D22BB0A86000F6314 /* AppDelegate.swift */,
 				375F438122BB0A86000F6314 /* Actions.sks */,
 				375F438322BB0A86000F6314 /* GameScene.swift */,
+				9FFE341822CECA4E00A5C4B2 /* GameOverScene.swift */,
 				9F32EA6B22C2D9C900DDD58A /* ERICKHOBBSScene.sks */,
 				375F438522BB0A86000F6314 /* GameViewController.swift */,
 				37767B3422BB9C4900D85087 /* SKTUtils */,
@@ -308,6 +311,7 @@
 			files = (
 				37767B4222BB9C4900D85087 /* CGVector+Extensions.swift in Sources */,
 				37767B4C22BB9C4900D85087 /* CGFloat+Extensions.swift in Sources */,
+				9FFE341922CECA4E00A5C4B2 /* GameOverScene.swift in Sources */,
 				37767B4922BB9C4900D85087 /* SKTEffects.swift in Sources */,
 				375F438422BB0A86000F6314 /* GameScene.swift in Sources */,
 				37767B4622BB9C4900D85087 /* SKAction+SpecialEffects.swift in Sources */,
