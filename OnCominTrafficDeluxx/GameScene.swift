@@ -60,7 +60,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var lastUpdateTimeInterval: TimeInterval = 0
     var deltaTime: TimeInterval = 0
     var timer : CGFloat = 0.0
+    var currentGameTime : CGFloat = 0.0
 
+    var playableRect: CGRect!
+
+    let movementSpeed: CGFloat = 20.0
+    var velocity = CGPoint.zero
+    
     override func didMove(to view: SKView) {
         maxAspectRatio = 16.0/9.0
         playableHeight = size.width / maxAspectRatio
@@ -114,10 +120,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         return scaledOverlap/scale
     }
     
+    func movementTap(touchLocation : CGPoint){
+        moveTowards(location: touchLocation)
+    }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
-        if gameState == .waitingForTap {
+        guard let touch = touches.first else {
+            return
+        }
+        let touchLocation = touch.location(in: self)
+        
+        if touchLocation.x > player.position.x{
+            velocity = CGPoint(x: movementSpeed, y:0)
+        }else{
+        velocity = CGPoint(x: -movementSpeed, y:0)
+        }
+        
+            if gameState == .waitingForTap {
+            
             StartGame()
         }
+    }
+    
+    func moveTowards(location: CGPoint) {
+        let offset = CGPoint(x: location.x - player.position.x,
+                             y: location.y - player.position.y)
+        let length = sqrt(
+            Double(offset.x + offset.y * offset.y))
+        let direction = CGPoint(x: offset.x / CGFloat(length),
+                                y: 0)
+        velocity = CGPoint(x: offset.x / CGFloat(length),
+                           y: 0)
     }
     
     func SetupNodes(){
@@ -133,9 +165,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         levelPositionY = bgNode.childNode(withName: "Overlay")!.position.y + bgOverlayHeight
     }
     
-    func setupPlayer () {
+
+    func setupPlayer (){
         player.physicsBody!.isDynamic = false
         player.physicsBody!.allowsRotation = false
+        player.physicsBody!.restitution = 0.1
         player.physicsBody!.categoryBitMask = PhysicsCategories.Player
         player.physicsBody!.collisionBitMask = PhysicsCategories.Coin
         player.physicsBody!.contactTestBitMask = PhysicsCategories.Coin
@@ -159,7 +193,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     func UpdateCopCollision(){
         if player.position.y < cops.position.y + 90 {
 //            playerState = .dead
-            setPlayerSetVelocity(750)
+            setPlayerSetVelocity(1550)
         }
         //checkCollisions()
     }
@@ -172,6 +206,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         var newCopsPos = cops.position.y + CopsStep
         newCopsPos = max(newCopsPos, bottomOfScreen - 125.0)
         cops.position.y = newCopsPos
+    }
+    
+    func updatePlayer(){
+        setPlayerSetVelocity(350)
     }
     
     func StartGame(){
@@ -231,6 +269,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         fgNode.addChild(foregroundOverlay)
     }
     
+    func move(sprite: SKSpriteNode, velocity: CGPoint) {
+        let distanceToMove = CGPoint(x: velocity.x * CGFloat(CGFloat(deltaTime) * movementSpeed),
+                                      y: velocity.y * CGFloat())
+        
+        player.position = CGPoint(
+        x: player.position.x + velocity.x,
+        y: player.position.y + distanceToMove.y)
+    }
+    
     func addRandomBackground(){
         let overlaySprite = SKSpriteNode(imageNamed: "block_break01")
         let platformPercentage = 60
@@ -246,6 +293,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             
             overlaySprite.zPosition = 10
             overlaySprite.physicsBody = SKPhysicsBody(rectangleOf: overlaySprite.size)
+            overlaySprite.physicsBody!.isDynamic = false
 
             overlaySprite.physicsBody?.collisionBitMask = PhysicsCategories.Player
             overlaySprite.physicsBody?.categoryBitMask = PhysicsCategories.Coin
@@ -272,7 +320,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         case PhysicsCategories.Coin:
             if let coin = other.node as? SKSpriteNode {
                 coin.removeFromParent()
-                setPlayerSetVelocity(500)
+                setPlayerSetVelocity(1500)
             }
         case PhysicsCategories.Powerup:
             if let PU = other.node as? SKSpriteNode {
@@ -289,6 +337,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         ///EH end
         default:
             break
+        }
+    }
+    
+    func boundsCheck(){
+        let bottomLeft =  CGPoint(x: -size.width/2.5,
+                                  y: 0)
+        let topRight = CGPoint(x: size.width, y: size.height)
+        
+        if player.position.x <= bottomLeft.x {
+            player.position.x = bottomLeft.x
+            velocity.x = -velocity.x
+    }
+        if player.position.x >= -bottomLeft.x {
+            player.position.x = -bottomLeft.x
+            velocity.x = -velocity.x
         }
     }
 
@@ -371,7 +434,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             updateLevel()
             updateCops(deltaTime)
             UpdateCopCollision()
+            updatePlayer()
+            boundsCheck()
             timer = timer + 1
+            move(sprite: player, velocity: velocity)
+        
         }
         ///Erick Hobbs
         if lives <= 0 && !gameOver {
@@ -397,6 +464,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     ///Erick Hobbs end
 }
+
 
 
 
