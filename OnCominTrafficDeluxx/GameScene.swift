@@ -79,6 +79,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         SetupNodes()
         SetUpCoreMotion()
         setupPlayer()
+        lives = 5
         fgNode.childNode(withName: "Ready")!.run(scale)
     }
 
